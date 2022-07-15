@@ -29,7 +29,7 @@ resource "aws_s3_object" "src_zip" {
 
 module "endpoint_ping" {
   source  = "app.terraform.io/${tf_org}/rest-api-endpoint/aws"
-  version = "0.1.0"
+  version = "0.1.2"
 
   tf_org = var.tf_org
 
