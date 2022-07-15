@@ -29,7 +29,7 @@ resource "aws_s3_object" "src_zip" {
 
 module "endpoint_ping" {
   source  = "app.terraform.io/abcballpark/rest-api-endpoint/aws"
-  version = "0.1.3"
+  version = "0.1.4"
 
   endpoint_name      = "ping"
   api_name           = aws_api_gateway_rest_api.api.name
@@ -37,6 +37,7 @@ module "endpoint_ping" {
   src_bucket         = aws_s3_bucket.src.id
   src_key            = aws_s3_object.src_zip.key
   handler            = "index.ping"
+  http_method        = "GET"
   src_hash           = data.archive_file.src_zip.output_base64sha256
   parent_resource_id = aws_api_gateway_rest_api.api.root_resource_id
 }
