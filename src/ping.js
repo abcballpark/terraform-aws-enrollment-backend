@@ -1,3 +1,3 @@
-module.exports = () => {
-  return "ping";
+module.exports = (event, context, callback) => {
+  callback(null, "pong");
 };
