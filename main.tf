@@ -2,6 +2,30 @@ resource "aws_api_gateway_rest_api" "api" {
   name = var.api_name
 }
 
+resource "aws_api_gateway_deployment" "dev" {
+  rest_api_id = aws_api_gateway_rest_api.api.id
+
+  triggers = {
+    redeployment = sha1(jsonencode([
+      // src directory
+      data.archive_file.src_zip.output_base64sha256,
+      // Endpoint definitions
+      endpoint_ping.sha1_output,
+
+    ]))
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_api_gateway_stage" "dev" {
+  rest_api_id   = aws_api_gateway_rest_api.api.id
+  deployment_id = aws_api_gateway_deployment.dev.id
+  stage_name    = "dev"
+}
+
 data "aws_iam_policy_document" "enrollment_api_logger_role_policy_doc" {
   statement {
     effect = "Allow"
@@ -78,9 +102,12 @@ resource "aws_api_gateway_authorizer" "main" {
   ]
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// Endpoints
+
 module "endpoint_ping" {
   source  = "app.terraform.io/abcballpark/rest-api-endpoint/aws"
-  version = "0.1.7"
+  version = local.version_rest_api_endpoint
 
   endpoint_name      = "ping"
   api_name           = aws_api_gateway_rest_api.api.name
