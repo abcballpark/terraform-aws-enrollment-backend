@@ -102,6 +102,11 @@ resource "aws_api_gateway_authorizer" "main" {
   ]
 }
 
+
+module "tables" {
+  source = "./data"
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Endpoints
 
