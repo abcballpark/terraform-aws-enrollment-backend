@@ -24,6 +24,19 @@ resource "aws_api_gateway_stage" "dev" {
   rest_api_id   = aws_api_gateway_rest_api.api.id
   deployment_id = aws_api_gateway_deployment.dev.id
   stage_name    = "dev"
+
+  access_log_settings {
+    destination_arn = aws_cloudwatch_log_group.api_gw_log.arn
+    format = ""
+  }
+}
+
+resource "aws_cloudwatch_log_group" "api_gw_access_log" {
+  name = "/aws/api_gateway/enrollment-api/dev"
+}
+
+resource "aws_cloudwatch_log_group" "api_gw_execution_log" {
+  name = "API-Gateway-Execution-Logs_${aws_api_gateway_rest_api.api.id}/${aws_api_gateway_stage.dev.stage_name}"
 }
 
 data "aws_iam_policy_document" "enrollment_api_logger_role_policy_doc" {
