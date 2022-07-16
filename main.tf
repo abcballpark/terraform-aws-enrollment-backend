@@ -10,7 +10,7 @@ resource "aws_api_gateway_deployment" "dev" {
       // src directory
       data.archive_file.src_zip.output_base64sha256,
       // Endpoint definitions
-      endpoint_ping.sha1_output,
+      module.endpoint_ping.sha1_output,
 
     ]))
   }
