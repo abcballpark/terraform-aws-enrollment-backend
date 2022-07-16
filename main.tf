@@ -2,12 +2,7 @@ resource "aws_api_gateway_rest_api" "api" {
   name = var.api_name
 }
 
-resource "aws_iam_role" "enrollment_api_logger" {
-  name               = "enrollment-api-logger"
-  assume_role_policy = data.aws_iam_policy_document.enrollment_api_logger_role_policy_doc.json
-}
-
-data "aws_iam_policy_document" "enrollment_api_logger_role_policy_api_gateway" {
+data "aws_iam_policy_document" "enrollment_api_logger_role_policy_doc" {
   statement {
     effect = "Allow"
     principals {
@@ -36,6 +31,10 @@ data "aws_iam_policy_document" "enrollment_api_logger_role_policy_cloudwatch" {
     ]
     resources = ["*"]
   }
+}
+resource "aws_iam_role" "enrollment_api_logger" {
+  name               = "enrollment-api-logger"
+  assume_role_policy = data.aws_iam_policy_document.enrollment_api_logger_role_policy_doc.json
 }
 
 resource "aws_iam_role_policy" "enrollment_api_logger_policy_1" {
