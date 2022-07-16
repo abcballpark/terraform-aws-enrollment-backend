@@ -107,8 +107,7 @@ resource "aws_api_gateway_authorizer" "main" {
 
 module "endpoint_ping" {
   source  = "app.terraform.io/abcballpark/rest-api-endpoint/aws"
-  version = local.version_rest_api_endpoint
-
+  version = "0.1.8"
   endpoint_name      = "ping"
   api_name           = aws_api_gateway_rest_api.api.name
   api_id             = aws_api_gateway_rest_api.api.id
