@@ -6,14 +6,12 @@ data "aws_iam_policy_document" "enrollment_api_logger_role_policy_doc" {
   statement {
     effect = "Allow"
     principals {
-      type = "Service"
-      identifiers = [
-        "apigateway.amazonaws.com"
-      ]
-      actions = [
-        "sts:AssumeRole"
-      ]
+      type        = "Service"
+      identifiers = ["apigateway.amazonaws.com"]
     }
+    actions = [
+      "sts:AssumeRole"
+    ]
   }
 }
 
