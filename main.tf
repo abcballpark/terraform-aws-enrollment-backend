@@ -26,7 +26,7 @@ resource "aws_api_gateway_stage" "dev" {
   stage_name    = "dev"
 
   access_log_settings {
-    destination_arn = aws_cloudwatch_log_group.api_gw_log.arn
+    destination_arn = aws_cloudwatch_log_group.api_gw_access_log.arn
     format = ""
   }
 }
