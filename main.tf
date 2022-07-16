@@ -2,6 +2,51 @@ resource "aws_api_gateway_rest_api" "api" {
   name = var.api_name
 }
 
+resource "aws_iam_role" "enrollment_api_logger" {
+  name               = "enrollment-api-logger"
+  assume_role_policy = data.aws_iam_policy_document.enrollment_api_logger_role_policy_doc.json
+}
+
+data "aws_iam_policy_document" "enrollment_api_logger_role_policy_api_gateway" {
+  statement {
+    effect = "Allow"
+    principals {
+      type = "Service"
+      identifiers = [
+        "apigateway.amazonaws.com"
+      ]
+      actions = [
+        "sts:AssumeRole"
+      ]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "enrollment_api_logger_role_policy_cloudwatch" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:DescribeLogGroups",
+      "logs:DescribeLogStreams",
+      "logs:PutLogEvents",
+      "logs:GetLogEvents",
+      "logs:FilterLogEvents"
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_role_policy" "enrollment_api_logger_policy_1" {
+  role   = aws_iam_role.enrollment_api_logger.id
+  policy = data.aws_iam_policy_document.enrollment_api_logger_role_policy_cloudwatch.json
+}
+
+resource "aws_api_gateway_account" "enrollment_api" {
+  cloudwatch_role_arn = aws_iam_role.enrollment_api_logger.arn
+}
+
 resource "aws_s3_bucket" "src" {
   bucket_prefix = "eb-src-"
 }
