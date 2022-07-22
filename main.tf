@@ -152,5 +152,5 @@ module "endpoint_participant" {
   src_hash           = data.archive_file.src_zip.output_base64sha256
   parent_resource_id = aws_api_gateway_rest_api.api.root_resource_id
   authorizer_id      = aws_api_gateway_authorizer.main.id
-  dynamo_table_arn   = aws_dynamodb_table.participant.arn
+  dynamo_table_arn   = module.tables.participant_table_arn
 }
