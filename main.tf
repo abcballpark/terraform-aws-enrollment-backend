@@ -140,7 +140,7 @@ module "tables" {
 
 module "endpoint_participant" {
   source  = "app.terraform.io/abcballpark/rest-api-endpoint/aws"
-  version = "0.1.12"
+  version = "0.1.13"
   endpoint_name      = "participant"
   api_name           = aws_api_gateway_rest_api.api.name
   api_id             = aws_api_gateway_rest_api.api.id
