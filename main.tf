@@ -137,3 +137,18 @@ module "endpoint_ping" {
   parent_resource_id = aws_api_gateway_rest_api.api.root_resource_id
   authorizer_id      = aws_api_gateway_authorizer.main.id
 }
+
+module "endpoint_participant" {
+  source  = "app.terraform.io/abcballpark/rest-api-endpoint/aws"
+  version = "0.1.8"
+  endpoint_name      = "participant"
+  api_name           = aws_api_gateway_rest_api.api.name
+  api_id             = aws_api_gateway_rest_api.api.id
+  src_bucket         = aws_s3_bucket.src.id
+  src_key            = aws_s3_object.src_zip.key
+  handler            = "index.participant"
+  http_method        = "POST"
+  src_hash           = data.archive_file.src_zip.output_base64sha256
+  parent_resource_id = aws_api_gateway_rest_api.api.root_resource_id
+  authorizer_id      = aws_api_gateway_authorizer.main.id
+}
