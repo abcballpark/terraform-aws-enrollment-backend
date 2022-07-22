@@ -125,7 +125,7 @@ module "tables" {
 
 module "endpoint_ping" {
   source  = "app.terraform.io/abcballpark/rest-api-endpoint/aws"
-  version = "0.1.8"
+  version = "0.1.9"
   endpoint_name      = "ping"
   api_name           = aws_api_gateway_rest_api.api.name
   api_id             = aws_api_gateway_rest_api.api.id
@@ -140,7 +140,7 @@ module "endpoint_ping" {
 
 module "endpoint_participant" {
   source  = "app.terraform.io/abcballpark/rest-api-endpoint/aws"
-  version = "0.1.8"
+  version = "0.1.9"
   endpoint_name      = "participant"
   api_name           = aws_api_gateway_rest_api.api.name
   api_id             = aws_api_gateway_rest_api.api.id
