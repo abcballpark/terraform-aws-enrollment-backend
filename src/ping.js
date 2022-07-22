@@ -1,3 +1,5 @@
 module.exports = (event, context, callback) => {
-  callback(null, "pong");
+  callback(null, {
+    body: "pong"
+  });
 };
