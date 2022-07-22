@@ -7,7 +7,7 @@ module.exports = async (tableName, item) => {
   const record = AWS.DynamoDB.Converter.marshall(item);
 
   // Call DynamoDB to add the item to the table
-  await ddb.putItem({
+  await dynamodb.putItem({
     TableName: tableName,
     Item: record,
   }).promise();
