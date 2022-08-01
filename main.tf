@@ -82,30 +82,30 @@ resource "aws_api_gateway_account" "enrollment_api" {
   cloudwatch_role_arn = aws_iam_role.enrollment_api_logger.arn
 }
 
-resource "aws_s3_bucket" "src" {
-  bucket_prefix = "eb-src-"
-}
+# resource "aws_s3_bucket" "src" {
+#   bucket_prefix = "eb-src-"
+# }
 
-resource "aws_s3_bucket_acl" "src" {
-  bucket = aws_s3_bucket.src.id
-  acl    = "private"
-}
+# resource "aws_s3_bucket_acl" "src" {
+#   bucket = aws_s3_bucket.src.id
+#   acl    = "private"
+# }
 
-data "archive_file" "src_zip" {
-  type = "zip"
+# data "archive_file" "src_zip" {
+#   type = "zip"
 
-  source_dir  = "${path.module}/src"
-  output_path = "${path.module}/src.zip"
-}
+#   source_dir  = "${path.module}/src"
+#   output_path = "${path.module}/src.zip"
+# }
 
-resource "aws_s3_object" "src_zip" {
-  bucket = aws_s3_bucket.src.id
+# resource "aws_s3_object" "src_zip" {
+#   bucket = aws_s3_bucket.src.id
 
-  key    = "src.zip"
-  source = data.archive_file.src_zip.output_path
+#   key    = "src.zip"
+#   source = data.archive_file.src_zip.output_path
 
-  etag = filemd5(data.archive_file.src_zip.output_path)
-}
+#   etag = filemd5(data.archive_file.src_zip.output_path)
+# }
 
 resource "aws_api_gateway_authorizer" "main" {
   name        = "main"
@@ -124,33 +124,33 @@ module "tables" {
 ///////////////////////////////////////////////////////////////////////////////
 // Endpoints
 
-module "endpoint_ping" {
-  source  = "app.terraform.io/abcballpark/rest-api-endpoint/aws"
-  version = "0.1.11"
-  endpoint_name      = "ping"
-  api_name           = aws_api_gateway_rest_api.api.name
-  api_id             = aws_api_gateway_rest_api.api.id
-  src_bucket         = aws_s3_bucket.src.id
-  src_key            = aws_s3_object.src_zip.key
-  handler            = "index.ping"
-  http_method        = "GET"
-  src_hash           = data.archive_file.src_zip.output_base64sha256
-  parent_resource_id = aws_api_gateway_rest_api.api.root_resource_id
-  authorizer_id      = aws_api_gateway_authorizer.main.id
-}
+# module "endpoint_ping" {
+#   source  = "app.terraform.io/abcballpark/rest-api-endpoint/aws"
+#   version = "0.1.11"
+#   endpoint_name      = "ping"
+#   api_name           = aws_api_gateway_rest_api.api.name
+#   api_id             = aws_api_gateway_rest_api.api.id
+#   src_bucket         = aws_s3_bucket.src.id
+#   src_key            = aws_s3_object.src_zip.key
+#   handler            = "index.ping"
+#   http_method        = "GET"
+#   src_hash           = data.archive_file.src_zip.output_base64sha256
+#   parent_resource_id = aws_api_gateway_rest_api.api.root_resource_id
+#   authorizer_id      = aws_api_gateway_authorizer.main.id
+# }
 
-module "endpoint_participant" {
-  source  = "app.terraform.io/abcballpark/rest-api-endpoint/aws"
-  version = "0.1.13"
-  endpoint_name      = "participant"
-  api_name           = aws_api_gateway_rest_api.api.name
-  api_id             = aws_api_gateway_rest_api.api.id
-  src_bucket         = aws_s3_bucket.src.id
-  src_key            = aws_s3_object.src_zip.key
-  handler            = "index.participant"
-  http_method        = "POST"
-  src_hash           = data.archive_file.src_zip.output_base64sha256
-  parent_resource_id = aws_api_gateway_rest_api.api.root_resource_id
-  authorizer_id      = aws_api_gateway_authorizer.main.id
-  dynamo_table_arn   = module.tables.participant_table_arn
-}
+# module "endpoint_participant" {
+#   source  = "app.terraform.io/abcballpark/rest-api-endpoint/aws"
+#   version = "0.1.13"
+#   endpoint_name      = "participant"
+#   api_name           = aws_api_gateway_rest_api.api.name
+#   api_id             = aws_api_gateway_rest_api.api.id
+#   src_bucket         = aws_s3_bucket.src.id
+#   src_key            = aws_s3_object.src_zip.key
+#   handler            = "index.participant"
+#   http_method        = "POST"
+#   src_hash           = data.archive_file.src_zip.output_base64sha256
+#   parent_resource_id = aws_api_gateway_rest_api.api.root_resource_id
+#   authorizer_id      = aws_api_gateway_authorizer.main.id
+#   dynamo_table_arn   = module.tables.participant_table_arn
+# }
