@@ -8,10 +8,10 @@ resource "aws_api_gateway_deployment" "dev" {
   triggers = {
     redeployment = sha1(jsonencode([
       // src directory
-      data.archive_file.src_zip.output_base64sha256,
-      // Endpoint definitions
-      module.endpoint_ping.sha1_output,
-      module.endpoint_participant.sha1_output
+      # data.archive_file.src_zip.output_base64sha256,
+      # // Endpoint definitions
+      # module.endpoint_ping.sha1_output,
+      # module.endpoint_participant.sha1_output
 
     ]))
   }
